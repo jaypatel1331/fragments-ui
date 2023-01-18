@@ -1,0 +1,21 @@
+{
+  "name": "fragments-ui",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Fragments UI testing web app",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jaypatel1331/fragments-ui.git"
+  },
+  "author": "Jay Ashishbhai Patel <japatel31@myseneca.ca>",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "parcel": "^2.8.2"
+  },
+  "dependencies": {
+    "aws-amplify": "^5.0.10"
+  }
+}
