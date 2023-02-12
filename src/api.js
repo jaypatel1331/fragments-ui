@@ -24,3 +24,26 @@ export async function getUserFragments(user) {
     console.error('Unable to call GET /v1/fragment', { err });
   }
 }
+
+
+// postUser function for the fragments microservice
+export async function postUser(user, fragment) {
+  console.log('Posting user data...');
+  try {
+    const res = await fetch(`${apiUrl}/v1/fragments`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${user.idToken}`,
+        'Content-Type': 'text/plain',
+      },
+      body: `${fragment}`,
+    });
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
+    }
+    const data = await res.json();
+    console.log('Got user data', { data });
+  } catch (err) {
+    console.error('Unable to call POST /v1/fragments', { err });
+  }
+}
