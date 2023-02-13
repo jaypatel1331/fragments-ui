@@ -11,6 +11,7 @@ async function init() {
   const logoutBtn = document.querySelector('#logout');
   const newFragment = document.querySelector('#new-fragment');
   const content = document.querySelector('#new-fragment-title');
+  const fragmentSection = document.querySelector('#fragment');
 
   // Wire up event handlers to deal with login and logout.
   loginBtn.onclick = () => {
@@ -22,9 +23,6 @@ async function init() {
     // Sign-out of the Amazon Cognito Hosted UI (requires redirects), see:
     // https://docs.amplify.aws/lib/auth/emailpassword/q/platform/js/#sign-out
     Auth.signOut();
-  };
-  newFragment.onclick = () => {
-    postUser(user, content.value);
   };
   
   // See if we're signed in (i.e., we'll have a `user` object)
@@ -51,6 +49,15 @@ async function init() {
 
   // Disable the Login button
   loginBtn.disabled = true;
+
+
+  // show the new fragment form
+  fragmentSection.hidden = false;
+
+ // call the API to post a new fragment
+ newFragment.onclick = () => {
+  postUser(user, content.value);
+};
 }
 
 // Wait for the DOM to be ready, then start the app
