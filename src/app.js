@@ -3,6 +3,7 @@
 import { Auth, getUser } from './auth';
 import { getUserFragments, postUser } from './api';
 
+var user;
 
 async function init() {
   // Get our UI elements
@@ -12,6 +13,16 @@ async function init() {
   const newFragment = document.querySelector('#new-fragment');
   const content = document.querySelector('#new-fragment-title');
   const fragmentSection = document.querySelector('#fragment');
+  const contentType = document.querySelector('#content-type');
+  var viewFragmentsSection = document.querySelector("#viewFragments");
+  const getFragmentBtn = document.querySelector("#getFragmentBtn");
+
+
+    // Retrieve all fragments
+    getFragmentBtn.onclick = () => {
+      addFragmentToTable();
+    };
+
 
   // Wire up event handlers to deal with login and logout.
   loginBtn.onclick = () => {
@@ -26,7 +37,7 @@ async function init() {
   };
   
   // See if we're signed in (i.e., we'll have a `user` object)
-  const user = await getUser();
+  user = await getUser();
 
   // Do an authenticated request to the fragments API server and log the result
   getUserFragments(user);
@@ -36,6 +47,10 @@ async function init() {
     logoutBtn.disabled = true;
     return;
   }
+  else {
+    // if we are signed in, trigger a get request
+    addFragmentToTable();
+  }
 
   // Log the user info for debugging purposes
 
@@ -43,6 +58,9 @@ async function init() {
 
   // Update the UI to welcome the user
   userSection.hidden = false;
+
+  //show the view fragments section
+  viewFragmentsSection.hidden = false;
 
   // Show the user's username
   userSection.querySelector('.username').innerText = user.username;
@@ -54,10 +72,62 @@ async function init() {
   // show the new fragment form
   fragmentSection.hidden = false;
 
+  
+
  // call the API to post a new fragment
  newFragment.onclick = () => {
-  postUser(user, content.value);
+  postUser(user, content.value, contentType.value);
 };
+}
+
+// function to populate the table with fragments
+function addFragmentToTable() {
+
+  
+  let fragmentHtml = "";
+  let fragmentList = document.querySelector(".fragmentList");
+  fragmentList.innerHTML = "";
+  getUserFragments(user).then((data) => {
+    if (data.length) {
+      // Create the titles for each column and add to the table
+      let header = document.createElement("tr");
+      let headerOptions = [
+        "ID",
+        "Created",
+        "Updated",
+        "Type"
+      ];
+      for (let column of headerOptions) {
+        let th = document.createElement("th");
+        th.append(column);
+        header.appendChild(th);
+      }
+      fragmentList.appendChild(header);
+
+      for (let fragment of data) {
+        let tr = document.createElement("tr");
+        let id = document.createElement("td");
+        let created = document.createElement("td");
+        let updated = document.createElement("td");
+
+        let type = document.createElement("td");
+
+        id.append(fragment.id);
+        created.append(fragment.created);
+        updated.append(fragment.updated);
+        type.append(fragment.type);
+        tr.append(id, created, updated, type);
+
+        fragmentList.appendChild(tr);
+      }
+    } else {
+      let td = document.createElement("td");
+      td.append("No fragments were found");
+
+      fragmentList.append(td);
+    }
+  });
+  fragmentList.html = fragmentHtml;
 }
 
 // Wait for the DOM to be ready, then start the app

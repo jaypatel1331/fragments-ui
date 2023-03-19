@@ -16,10 +16,39 @@
 
     <section hidden id="fragment">
       <h4>Fragment</h4>
-      <p>Enter text to post the fragment</p>
+      <p>Enter content to post the fragment</p>
       <input type="input" id="new-fragment-title" name="Title"/>
       <br><br>
+      <!-- dropdown for content type-->
+      <select id="content-type">
+        <option value="text/plain">text/plain</option>
+        <option value="text/html">text/html</option>
+        <option value="text/markdown">text/markdown</option>
+      <option value="text/plain; charset=utf-8">text/plain; charset=utf-8</option>
+      <option value="application/json">application/json</option>
+      </select>
+      <br><br>
+
       <Button id="new-fragment">New Fragment</Button>
+    </section>
+
+
+    <br><br>
+    <hr>
+
+    <section hidden id="viewFragments">
+
+      <h2>Fragment List</h2>
+
+      <button id="getFragmentBtn">Refresh</button>
+      <table class="fragmentList">
+        <tr>
+          <th>id</th>
+          <th>Created</th>
+          <th>Updated</th>
+          <th>type</th>
+        </tr>
+      </table>
     </section>
   </body>
 </html>
