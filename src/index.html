@@ -14,10 +14,12 @@
       <h2>Hello <span class="username"></span>!</h2>
     </section>
 
+        <!-- new fragment--------------------------------------------------------------------------------------------->
     <section hidden id="fragment">
-      <h4>Fragment</h4>
+      <h3>Create a New Fragment</h3>
       <p>Enter content to post the fragment</p>
-      <input type="input" id="new-fragment-title" name="Title"/>
+      <input type="input" id="new-fragment-title" name="Title" placeholder="Fragment Data"/>
+      <p id="error1" hidden style="color:red">Enter content to post fragment</p>
       <br><br>
       <!-- dropdown for content type-->
       <select id="content-type">
@@ -26,20 +28,87 @@
         <option value="text/markdown">text/markdown</option>
       <option value="text/plain; charset=utf-8">text/plain; charset=utf-8</option>
       <option value="application/json">application/json</option>
+      <option value="image/jpeg">image/jpeg</option>
+      <option value="image/png">image/png</option>
+      <option value="image/webp">image/webp</option>
       </select>
+      <br><br>
+      <input type="file" id="file" name="file" accept="image/*" />
+      <p id="error2" hidden style="color:red">select content to post fragment</p>
       <br><br>
 
       <Button id="new-fragment">New Fragment</Button>
     </section>
-
-
     <br><br>
-    <hr>
+    <hr color="black"><hr color="black">
 
+        <!-- update fragment--------------------------------------------------------------------------------------------->
+
+        <section hidden id="update-fragment">
+          <h3>Update the Existing Fragment</h3>
+          <p>Enter the Fragment Id</p>
+          <input type="input" id="update-fragment-id" name="Fragment ID" placeholder="Fragment Id"/>
+          <p id="error3" hidden style="color:red">Enter fragment Id to update a fragment</p>
+          <br><br>
+          <input type="input" id="update-fragment-title" name="Title" placeholder="Fragment Data"/>
+          <p id="error4" hidden style="color:red">Enter content to update a fragment</p>
+          <br><br>
+          <!-- dropdown for content type-->
+          <select id="update-content-type">
+            <option value="text/plain">text/plain</option>
+            <option value="text/html">text/html</option>
+            <option value="text/markdown">text/markdown</option>
+          <option value="text/plain; charset=utf-8">text/plain; charset=utf-8</option>
+          <option value="application/json">application/json</option>
+          <option value="image/jpeg">image/jpeg</option>
+          <option value="image/png">image/png</option>
+          <option value="image/webp">image/webp</option>
+          </select>
+          <br><br>
+          <input type="file" id="update-file" name="file" accept="image/*" />
+          <p id="error5" hidden style="color:red">select content to update a fragment</p>
+          <br><br>
+          <Button id="updateFragmentBtn">Update Fragment</Button>
+        </section>
+        <br><br>
+        <hr color="black"><hr color="black">
+
+
+          <!-- delete fragment--------------------------------------------------------------------------------------------->
+
+          <section hidden id="delete-fragment">
+            <h3>Delete Fragment</h3>
+            <p>Enter the Fragment Id</p>
+            <input type="input" id="delete-fragment-id" name="Fragment ID" placeholder="Fragment Id"/>
+            <p id="error-delete-id" hidden style="color:red">Enter fragment Id to delete a fragment</p>
+            <br><br>
+            <Button id="deleteFragmentBtn">Delete Fragment</Button>
+          </section>
+          <br><br>
+          <hr color="black"><hr color="black">
+
+
+          
+          <!-- get by Id fragment Section--------------------------------------------------------------------------------------------->
+          <section hidden id="getById-fragment">
+            <h3>Get Fragment using Id</h3>
+            <p>Enter the Fragment Id (Id can be written with extension)</p>
+            <input type="input" id="Get-By-fragment-id" name="Fragment ID" placeholder="Fragment Id"/>
+            <p id="error-get-by-id" hidden style="color:red">Enter fragment Id to get Fragment Data</p>
+            <br><br>
+            <Button id="GetByIdFragmentBtn">Get Fragment Data</Button>
+            <Button id="GetByIdFragmentMetadataBtn">Get Fragment MetaData</Button>
+          </section>
+          <br><br>
+          
+          <h3>Fragment Data</h3>
+          <div id="my_div"></div>
+
+          <hr color="black"><hr color="black">
+
+    <!--fragment list section --------------------------------------------------------------------------------------------->
     <section hidden id="viewFragments">
-
-      <h2>Fragment List</h2>
-
+      <h3>Fragment List</h3>
       <button id="getFragmentBtn">Refresh</button>
       <table class="fragmentList">
         <tr>
