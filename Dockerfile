@@ -1,7 +1,7 @@
 #fragments-ui-testing-web-app
 
 #stage 1: dependencies
-FROM node:18-alpine as dependencies
+FROM node:18.13.0-alpine@sha256:fda98168118e5a8f4269efca4101ee51dd5c75c0fe56d8eb6fad80455c2f5827  as dependencies
 
 
 LABEL maintainer="Jay Patel <japatel31@myseneca.ca>"
@@ -29,7 +29,7 @@ RUN npm ci --only=production
 
 #*************************************************************************************************
 #stage 2: build
-FROM node:18-alpine as build
+FROM node:18.13.0-alpine@sha256:fda98168118e5a8f4269efca4101ee51dd5c75c0fe56d8eb6fad80455c2f5827 as build
 
 #use /app as our working directory
 WORKDIR /app
@@ -41,7 +41,7 @@ COPY --from=dependencies /app/ /app/
 COPY . .
 
 # Run the server
-CMD ["npm", "serve"]
+CMD ["npm", "build"]
 
 # We default to use port 1234
 EXPOSE 1234
@@ -55,5 +55,5 @@ FROM nginx:stable-alpine as production
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY --from=build /app/.parcel-cache /usr/share/nginx/html
 
-# run server on port 1234
-EXPOSE 1234
+# run server on port 80
+EXPOSE 80
