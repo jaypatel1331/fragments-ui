@@ -2,7 +2,6 @@
 
 // fragments microservice API, defaults to localhost:8080
 const apiUrl = process.env.API_URL || 'http://localhost:8080/';
-const sharp = require('sharp');
 
 /**
  * Given an authenticated user, request all fragments for this user from the
@@ -118,14 +117,13 @@ export async function getFragmentById(user, id) {
       data = await res.text();
     } else if (headers.includes("text/html")) {
       data = await res.text();
-    } else if (headers.includes("image/jpeg")){
-      //data = await res.blob();
-      data = await sharp(res.blob()).jpeg().toBuffer();
+    } else if (headers.includes("image/")){
+      data = await res.blob();
     }else{
       data = await res.text();
     }
       console.log("Got user fragments data", { data });
-      return[headers, data];
+      return [data];
   } catch (err) {
     console.error("Unable to call GET /v1/fragment", { err });
   }

@@ -14,7 +14,7 @@ async function init() {
   const content = document.querySelector('#new-fragment-title');
   const fragmentSection = document.querySelector('#fragment');
   const contentType = document.querySelector('#content-type');
-  const fileUpload = document.querySelector('#file');
+  var fileUpload = document.getElementById("file");
   var viewFragmentsSection = document.querySelector("#viewFragments");
   const getFragmentBtn = document.querySelector("#getFragmentBtn");
 
@@ -31,7 +31,7 @@ async function init() {
   const getByIdFragmentId = document.querySelector("#Get-By-fragment-id");
   const getByIdFragmentBtn = document.querySelector("#GetByIdFragmentBtn");
   const getByIdFragmentMetadataBtn = document.querySelector("#GetByIdFragmentMetadataBtn");
-  const infoData = document.querySelector("#my_div");
+  var infoData = document.querySelector("#my_div");
 
 
   // delete fragment query selector
@@ -115,14 +115,19 @@ getByIdFragmentSection.hidden = false;
 
  // call the API to post a new fragment
  newFragment.onclick = () => {
+  if(contentType.value == "image/jpeg" || contentType.value == "image/png" || contentType.value == "image/webp" || contentType.value == "image/gif") {
 
-  if(contentType.value == "image/jpeg" || contentType.value == "image/png" || contentType.value == "image/webp") {
-
-    if(fileUpload.value === ""){
+    if(fileUpload.files[0] === ""){
       error2.hidden = false;
       error1.hidden = true;
     }else{
-    postUser(user, fileUpload.value, contentType.value);
+
+      var fragment;
+      //read the file
+      var reader = new FileReader();
+      var fragment = reader.readAsDataURL(fileUpload.files[0]);
+      postUser(user, fragment, contentType.value);
+
     }
 
   }else if (contentType.value == "text/plain" || contentType.value == "text/html" 
@@ -145,14 +150,14 @@ updateFragmentBtn.onclick = () => {
     error5.hidden = true;
   }
     else {
-      if(updateContentType.value == "image/jpeg" || updateContentType.value == "image/png" || updateContentType.value == "image/webp") {
+      if(updateContentType.value == "image/jpeg" || updateContentType.value == "image/png" || updateContentType.value == "image/webp" || updateContentType.value == "image/gif") {
 
         if(updateFileUpload.value === ""){
           error5.hidden = false;
           error4.hidden = true;
           error3.hidden = true;
         }else{
-        putFragment(user,  updateFragmentId.value, updateContentType.value, updateFileUpload.value);
+        putFragment(user,  updateFragmentId.value, updateContentType.value, updateFileUpload);
       }
     }else if (updateContentType.value == "text/plain" || updateContentType.value == "text/html" 
       || updateContentType.value == "text/markdown" || updateContentType.value == "text/plain; charset=utf-8" 
@@ -185,18 +190,21 @@ getByIdFragmentBtn.onclick = async () => {
     errorGetByIdID.hidden = false;
   }else{
     var res = await getFragmentById(user, getByIdFragmentId.value);
-  //   if(res[0].includes("application/json")){
-  //     infoData.innerHTML = JSON.stringify(res[1]);
-  //   }else{
-  //   infoData.innerHTML = res;
-  // }
-  infoData.innerHTML = res;
 
+      if(res instanceof Blob){
+      var image = URL.createObjectURL(res[0]);
+      var img = document.createElement("img");
+      img.src = image;
+      infoData.innerHTML = img;
+      }
+      else{
+        infoData.innerHTML = res;
+      }
 }
 };
 
 // call api to get a fragment by id
-GetByIdFragmentMetadataBtn.onclick = async () => {
+  getByIdFragmentMetadataBtn.onclick = async () => {
   if(getByIdFragmentId.value === ""){
     errorGetByIdID.hidden = false;
   }else{
@@ -205,8 +213,9 @@ GetByIdFragmentMetadataBtn.onclick = async () => {
     infoData.innerHTML = metadata;
   }
 };
-
 };
+
+  
 
 // function to populate the table with fragments
 function addFragmentToTable() {
